@@ -70,7 +70,7 @@ public class Main extends Application {
         stack.getChildren().add(go);
         Scene scene = new Scene(stack);
         Stage goStage = new Stage();
-        goStage.getScene(scene);
+        goStage.setScene(scene);
         goStage.show();
     }
 
