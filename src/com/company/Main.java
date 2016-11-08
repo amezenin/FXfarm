@@ -42,12 +42,13 @@ public class Main extends Application {
             double feedAmountField= Double.parseDouble(protsent.getText());
             double feedConversionRatioField = Double.parseDouble(fcr.getText());
             double daysField = Double.parseDouble(paevuarv.getText());
-            double S = (bioMassField * feedAmountField / 100); //söödakogus sdelatj metodi dlja nih
-            double K = S / feedConversionRatioField;
-            double B = K + bioMassField; //uus biomass
-            resultBio.setText(String.valueOf(B));
-            resultKogus.setText(String.valueOf(S));
+            double soodakogus = (bioMassField * feedAmountField / 100); //söödakogus sdelatj metodi dlja nih
+            double juurdekasv = soodakogus / feedConversionRatioField;
+            double uusbiomass = juurdekasv + bioMassField; //uus biomass
+            resultBio.setText(String.valueOf(uusbiomass));
+            resultKogus.setText(String.valueOf(soodakogus));
         });
+
 
         tuhista.setOnAction((event) -> {
             bio.setText(null);
@@ -58,8 +59,72 @@ public class Main extends Application {
             resultKogus.setText(null);
         });
 
+
+
         mittupaeva.setOnAction((event) -> {
             uusaken();
+            double bioMassField = Double.parseDouble(bio.getText());
+            double feedAmountField= Double.parseDouble(protsent.getText());
+            double feedConversionRatioField = Double.parseDouble(fcr.getText());
+            int daysField = Integer.parseInt(paevuarv.getText());
+
+            double soodakogus = (bioMassField * feedAmountField / 100); //söödakogus
+            double juurdekasv = soodakogus / feedConversionRatioField; //juurdekasv
+            double uusbiomass = juurdekasv + bioMassField; //uus biomass
+
+            System.out.println(1 + " päev");
+            System.out.println(" Biomass: " + bioMassField);
+            System.out.println(" Söödakogus: " + soodakogus);
+            System.out.println(" Planeeritav juurdekasv: " + juurdekasv);
+
+
+            double[] mas = new double[daysField];
+            mas[0] = uusbiomass;
+            for (int i = 1; i < mas.length; i++) {
+                soodakogus = (mas[i-1] * feedAmountField / 100); //söödakogus
+                juurdekasv = soodakogus / feedConversionRatioField; //juurdekasv
+                mas[i] = juurdekasv + mas[i-1]; //uus biomass
+
+
+                System.out.println(i+1 + " päev");
+                System.out.println(" Biomass: " + mas[i-1]);
+                System.out.println(" Söödakogus: " + soodakogus);
+                System.out.println(" Planeeritav juurdekasv: " + juurdekasv);
+
+            }
+
+           /* double[] mas1 = new double[daysField];
+            mas1[1] = soodakogus;
+            for (int i = 1; i < mas.length; i++) {
+                juurdekasv = mas[i-1] / feedConversionRatioField; //juurdekasv
+                mas[i] = juurdekasv + mas[i-1]; //uus biomass
+                mas[i] = (bioMassField * feedAmountField / 100); //söödakogus
+
+            } */
+
+          /*  double[][] mas = new double[daysField][1];
+            mas[0][0] = uusbiomass;
+            mas[0][1] = soodakogus;
+            for (int i = 1; i < mas.length; i++) {
+                juurdekasv = mas[i-1][1] / feedConversionRatioField; //juurdekasv
+                mas[i][0] = juurdekasv + mas[i-1][0]; //uus biomass
+                mas[i][1] = (bioMassField * feedAmountField / 100); //söödakogus
+
+                System.out.println(mas[i][1]);
+            } */
+            /* praktika java
+            Paevuarv esimenePaev = new Paevuarv();
+List<Paevuarv> tulemused = new ArrayList<>();
+            int paevadeArv = 10;
+            Paevuarv praegune = esimenePaev;
+            for (int i = 0; i < paevuarv; i += 1) {
+
+                Paevuarv uusPaev = Paevuarv.arvutaUusPaev(uusPaev);
+                tulemused.add(uusPaev);
+            }
+*/
+
+
         });
 
     }
@@ -68,7 +133,7 @@ public class Main extends Application {
         StackPane stack = new StackPane();
         Label go = new Label("UUS");
         stack.getChildren().add(go);
-        Scene scene = new Scene(stack);
+        Scene scene = new Scene(stack, 600, 600);
         Stage goStage = new Stage();
         goStage.setScene(scene);
         goStage.show();
@@ -94,6 +159,8 @@ public class Main extends Application {
 
     }
 
+
+
     private void seadistaPohi() {
         pohi = new GridPane();
         Scene scene = new Scene(pohi, 600, 300);
@@ -103,5 +170,6 @@ public class Main extends Application {
         mainC.show();
 
     }
+
 
 }
